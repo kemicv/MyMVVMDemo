@@ -1,0 +1,68 @@
+﻿<Window x:Class="MyMVVMDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyMVVMDemo"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="700" Width="900"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:VMs="clr-namespace:MyMVVMDemo.ViewModels">
+    
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!--SIMPLE COMMAND-->
+        <Grid>
+            <Grid.DataContext>
+                <VMs:ClickViewModel/>
+            </Grid.DataContext>
+            <Button Content="Click Event" Command="{Binding Path=ClickCommand}" Width="100" Height="30"/>
+        </Grid>
+        
+        <!--WORKING WITH MODELS-->
+        <Grid Grid.Column="1">
+            <Grid.DataContext>
+                <VMs:ClickViewModel/>
+            </Grid.DataContext>
+            <StackPanel VerticalAlignment="Center">
+                <TextBox Width="50" Text="{Binding modelo.Contador, Mode=TwoWay}"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="Increment +1" Margin="15" Command="{Binding Path=IncrementCmd}"/>
+                    <Button Content="Decrement -1" Margin="15" Command="{Binding Path=DecrementCmd}"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        
+        <!--TEXT-CHANGED EVENTS-->
+        <Grid Grid.Column="2">
+            <Grid.DataContext>
+                <VMs:ClickViewModel/>
+            </Grid.DataContext>
+            <TextBox>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="TextChanged">
+                        <i:InvokeCommandAction Command="{Binding Path=TxtChangedCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
+        </Grid>
+
+        <!--MULTIPLE VIEWMODELS, SAME WINDOW-->
+        <Grid Grid.Row="1">
+            <Grid.DataContext>
+                <VMs:SecondViewModel/>
+            </Grid.DataContext>
+            <Button Content="2nd VM ClickEvent" Command="{Binding Path=SecClickCommand}" Width="150" Height="30"/>
+        </Grid>       
+        
+    </Grid>
+</Window>
