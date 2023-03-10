@@ -1,5 +1,7 @@
-﻿using MyMVVMDemo.Helpers;
+﻿using Microsoft.Xaml.Behaviors.Core;
+using MyMVVMDemo.Helpers;
 using System.Windows;
+using System.Windows.Input;
 
 namespace MyMVVMDemo.ViewModels
 {
@@ -7,14 +9,10 @@ namespace MyMVVMDemo.ViewModels
     {
         public SecondViewModel()
         {
-            secClickCommand = new RelayCommand(ClickEvent);
+            SecClickCommand = new ActionCommand(ClickEvent);
         }
 
-        private RelayCommand secClickCommand;
-        public RelayCommand SecClickCommand
-        {
-            get { return secClickCommand; }
-        }
+        public ICommand SecClickCommand { get; set; }
         private void ClickEvent()
         {
             MessageBox.Show("Sec ViewModel Function");

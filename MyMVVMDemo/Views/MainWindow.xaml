@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyMVVMDemo"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="900"
+        Title="MainWindow V2303091" Height="700" Width="900"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:VMs="clr-namespace:MyMVVMDemo.ViewModels">
     
@@ -34,7 +34,7 @@
                 <VMs:ClickViewModel/>
             </Grid.DataContext>
             <StackPanel VerticalAlignment="Center">
-                <TextBox Width="50" Text="{Binding modelo.Contador, Mode=TwoWay}"/>
+                <TextBox Width="50" Text="{Binding modelo.Contador, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Content="Increment +1" Margin="15" Command="{Binding Path=IncrementCmd}"/>
                     <Button Content="Decrement -1" Margin="15" Command="{Binding Path=DecrementCmd}"/>
@@ -56,13 +56,26 @@
             </TextBox>
         </Grid>
 
+        <!--PARAMETERS-->
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.DataContext>
+                <VMs:ClickViewModel/>
+            </Grid.DataContext>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Name="Btn1" Content="Par1" Margin="5" Command="{Binding MyCommand}" CommandParameter="ParVal1"/>
+            <Button Name="Btn2" Content="Par2" Margin="5" Grid.Column="1" Command="{Binding MyCommand}" CommandParameter="{Binding ElementName=Btn1}"/>
+        </Grid>
+        
         <!--MULTIPLE VIEWMODELS, SAME WINDOW-->
         <Grid Grid.Row="1">
             <Grid.DataContext>
                 <VMs:SecondViewModel/>
             </Grid.DataContext>
             <Button Content="2nd VM ClickEvent" Command="{Binding Path=SecClickCommand}" Width="150" Height="30"/>
-        </Grid>       
+        </Grid>
         
     </Grid>
 </Window>

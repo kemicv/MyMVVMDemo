@@ -1,26 +1,27 @@
-﻿using MyMVVMDemo.Helpers;
+﻿using Microsoft.Xaml.Behaviors.Core;
+using MyMVVMDemo.Helpers;
 using MyMVVMDemo.Models;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace MyMVVMDemo.ViewModels
 {
-    internal class ClickViewModel : BaseINotify
+    internal class ClickViewModel 
     {
         public ClickViewModel()
         {
-            clickCommand = new RelayCommand(ClickEvent);
+            ClickCommand = new ActionCommand(ClickEvent);
             modelo = new Counter();
-            decrementCmd = new RelayCommand(Decrement);
-            incrementCmd = new RelayCommand(Increment);
-            txtChangedCmd = new RelayCommand(TxtUpdated);
+            DecrementCmd = new ActionCommand(Decrement);
+            IncrementCmd = new ActionCommand(Increment);
+            TxtChangedCommand = new ActionCommand(TxtUpdated);
+            MyCommand = new ActionCommand(OnCommandExecuted);
         }
 
         #region MANEJO DE CLICK EVENTS (Commands)
-        private RelayCommand clickCommand;
-        public RelayCommand ClickCommand
-        {
-            get { return clickCommand; }
-        }
+        public ICommand ClickCommand { get; set; }
         private void ClickEvent()
         {
             MessageBox.Show("This is a Click Event");
@@ -29,30 +30,29 @@ namespace MyMVVMDemo.ViewModels
 
         #region ACCEDIENDO A LOS MODELOS
         public Counter modelo { get; set; }
-        private RelayCommand decrementCmd;
-        private RelayCommand incrementCmd;
-        public RelayCommand DecrementCmd { get { return decrementCmd; } }
-        public RelayCommand IncrementCmd { get { return incrementCmd; } }
+        public ICommand DecrementCmd { get; set; }
+        public ICommand IncrementCmd { get; set; }
 
-        private void Decrement()
-        {
-            modelo.Contador--;
-        }
-        private void Increment()
-        {
-            modelo.Contador++;
-        }
+        private void Decrement() { modelo.Contador--; }
+        private void Increment() { modelo.Contador++; }
         #endregion
 
-        #region MANEJO DE TEXT-CHANGED 
-        private RelayCommand txtChangedCmd;
-        public RelayCommand TxtChangedCommand
-        {
-            get { return txtChangedCmd; }
-        }
+        #region MANEJO DE TEXT-CHANGED
+        public ICommand TxtChangedCommand { get; set; }
         private void TxtUpdated()
         {
             MessageBox.Show("You update the text");
+        }
+        #endregion
+
+        #region PARAMETERS
+        public ICommand MyCommand { get; set; }
+        public void OnCommandExecuted(object obj)
+        {
+            //var button = obj as Button;
+            //button.Content = "cahngw";
+            //MessageBox.Show(button.Content.ToString());
+            MessageBox.Show(obj.ToString());
         }
         #endregion
     }
